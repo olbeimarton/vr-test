@@ -14,10 +14,9 @@
     <a-scene background="color: #777777;">
       <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
       <a-entity light="type: ambient;"></a-entity>
-      <a-entity id="controller-data" controller-listener="leftControllerId:  #left-controller; rightControllerId: #right-controller;"></a-entity>
+      <a-entity id="controller-data" controller-listener="leftControllerId:  #leftController; rightControllerId: #rightController;"></a-entity>
       <a-entity id="leftController" oculus-touch-controls="hand: left"></a-entity>
-      <a-entity id="rightController" oculus-touch-controls="hand: right" raycaster="objects: .raycaster-target, .environmentGround;"
-      raycaster-extras="controllerListenerId: #controller-data; beamImageSrc: #gradient; beamLength: 0.5;"></a-entity>
+      <a-entity id="rightController" oculus-touch-controls="hand: right" raycaster="objects: .raycaster-target, .environmentGround;" raycaster-extras="controllerListenerId: #controller-data; beamImageSrc: #gradient; beamLength: 0.5;"></a-entity>
       <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
       <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
       <a-circle position="0.0 0.0 0.0" radius="2.200000" rotation="-90 0 0" color="#DDBB00" raycaster-target></a-circle>
