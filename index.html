@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="aframe-master.min.js"></script>
+    <script src="aframe-network-component.js"></script>
+    <script>
+      AFRAME.registerComponent("look-at", {schema: {type: "selector"}, init: function () {}, tick: function () {this.el.object3D.lookAt(this.data.object3D.position);}});
+    </script>
+  </head>
+  <body>
+    <audio id="audioOn" src="click_on.wav"></audio>
+    <audio id="audioOff" src="click_off.wav"></audio>
+    <a-scene background="color: #FFFFFF;">
+      <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
+      <a-entity light="type: ambient;"></a-entity>
+      <a-entity id="leftController" hand-controls="hand: left; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
+      <a-entity id="rightController" hand-controls="hand: right; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
+      <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
+      <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
+      <a-circle position="0.0 0.0 0.0" radius="2.200000" rotation="-90 0 0" color="#F0F0F0"></a-circle>
+      <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.020000" edge_opacity="0.2" src="url(vr.ply)"></a-network>
+    </a-scene>
+    <script>
+      const node_names = ["REACTOME_COLLAGEN_DEGRADATION","REACTOME_DEGRADATION_OF_THE_EXTRACELLULAR_MATRIX","REACTOME_CELL_SURFACE_INTERACTIONS_AT_THE_VASCULAR_WALL","REACTOME_COLLAGEN_FORMATION","REACTOME_ASSEMBLY_OF_COLLAGEN_FIBRILS_AND_OTHER_MULTIMERIC_STRUCTURES","REACTOME_INTERLEUKIN_10_SIGNALING","REACTOME_INTEGRIN_CELL_SURFACE_INTERACTIONS","REACTOME_EXTRACELLULAR_MATRIX_ORGANIZATION","REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING","REACTOME_SIGNALING_BY_INTERLEUKINS","IFNG","MMP2","TIMP2","FSCN1","ITGA5","ITGA2B","FGG","MMP9","ITGA4","FN1","MSN","VCAM1","SDC2","FGF2","CD36","THBS1","SELL","COL1A1","ICAM3","SPP1","CD44","VCAN","IL16","SELE","ALOX5","MCL1","MYC","ITGAL","ICAM1","ITGB2","MMP14","RAPGEF1","FPR1","ANXA1","ITGB3","PTPN12","VIM","HCK","FYN","BLNK","PTPN7","JUNB","TP53","NOD2","RIPK2","MAP3K3","LYN","PRKCA","GRB2","PIK3CA","SELPLG","SELP","IL1RL1","IL33","IL1RN","IL17RA","IL17A","IL12B","CSF2RB","CCL11","CCR2","CCL2","CCR1","CD4","LCK","PTK2B","DDR2","ITGB8","TGFB1","STAT4","PAK2","IL5RA","IL5","IL21R","IL21","OSMR","OSM","STAT5B","MAP2K6","IL6R","IL12RB1","IL23A","SOCS3","MEF2C","IL15RA","IL15","STAT5A","JAK3","PTPN11","JAK2","NFKBIA","IKBKB","STAT2","CBL","SYK","SOCS1","CDC42","VAV1","LIFR","LIF","IL1R2","IL1B","MAP2K7","TNFRSF1B","TNF","CSF2RA","CSF2","CSF3R","CSF3","CSF1","CSF1R","CAV1","SRC","STAT1","PTPN2","CREB1","IL1R1","IL1A","IL6ST","IL6","CCL4","CCR5","CCL5","MAPK8","IRS1","JAK1","IL10RA","IL10","MAPK14","MAPKAPK2"];
+      const node_positions = [-1.381081,1.332011,0.820414,-1.496612,1.488029,-0.015291,-1.221826,1.664144,0.095854,-1.682534,0.766218,0.953460,-1.736645,0.609973,0.690711,1.093185,1.422506,-1.214132,-1.519729,1.037860,-0.859000,-1.551710,1.168324,-0.603614,0.361266,2.009887,-0.581277,0.907953,1.926352,-0.263757,1.426053,1.198224,0.837670,-0.960580,1.800656,-0.137655,-1.820728,1.084604,-0.488873,-0.077068,1.858385,-0.710223,-1.834911,0.790263,-0.547432,-1.791212,0.162818,-0.803987,-1.773611,0.342259,-1.176217,-1.023511,1.870185,0.273045,-1.815865,0.820901,-0.714341,-1.076600,1.615610,-0.467978,-0.041370,1.158243,-1.721130,-0.680791,1.539520,-1.300147,-1.686913,1.179971,-0.427174,-0.730613,1.795627,-0.614154,-0.312553,1.426798,-1.422223,-1.172779,0.855925,-1.613171,-1.718727,0.830133,0.657665,-2.098038,0.369672,0.031048,-1.528894,0.692020,-1.342456,-2.025081,0.435577,-0.583586,-2.055313,0.409277,-0.267116,-1.928633,0.103816,-0.318317,1.404100,1.412302,0.628728,-1.808934,0.821526,0.190961,1.451007,1.161981,1.171587,1.101897,1.694095,0.247083,1.732190,1.023103,0.027527,-1.337805,1.149741,-1.088139,-0.491270,1.667289,-1.028486,-0.870041,1.577960,-0.873350,-1.547346,1.350553,0.594738,-0.100125,1.730395,1.042734,0.578941,1.094746,-1.683984,0.094643,1.760348,-1.167610,-1.256119,1.593121,0.228317,-0.273482,2.123546,-0.030846,0.626275,1.853010,0.499897,0.646620,1.469262,1.298935,-0.699919,1.820169,0.981693,0.378124,1.441941,1.398435,2.016085,0.000000,0.760530,1.509101,1.447632,0.133207,0.645051,1.975298,-0.071575,-0.108220,1.479643,-1.334697,-0.230044,1.606835,-1.137745,0.153677,1.465128,-1.603483,0.330255,1.582696,1.257320,-0.498532,1.965805,-0.135634,-0.024581,1.926567,0.965418,-0.677455,2.052320,0.326776,-2.079049,0.109301,0.378216,-1.999042,0.773862,-0.280945,1.856243,0.622099,0.030022,1.905936,0.527342,-0.262092,1.528496,0.806079,-1.143252,1.438391,0.877996,-1.134042,1.140814,1.380683,-0.944262,0.734568,1.449885,-1.279314,1.941054,0.605270,-0.491161,0.408364,1.277801,-1.638379,0.720230,1.006031,-1.792357,0.917703,1.214982,-1.465406,1.205832,0.755106,-1.393937,0.668787,1.666741,0.786944,-0.406718,2.094169,0.482630,-0.475409,1.840846,0.739592,-1.460350,1.475706,0.553969,-1.278252,0.844935,-1.251489,-0.911858,1.868275,-0.702529,1.754021,0.658720,0.815290,0.893857,1.539602,1.277761,1.699785,0.603818,-1.120756,1.874329,0.562781,-0.696411,1.831627,0.910061,0.256553,1.761673,1.094369,0.681438,0.049548,1.940501,-0.306442,0.319211,1.679980,-1.038635,-0.126783,1.581469,1.258491,1.752596,0.256026,0.924176,1.408132,1.373388,-0.590842,1.025062,1.064177,-1.502829,0.646744,1.601167,-1.184619,0.103985,1.934480,0.288499,1.656131,0.120993,1.274047,1.904262,1.065183,0.246747,1.920749,0.759444,0.051881,0.265904,1.992403,0.578921,1.065052,1.682279,0.652554,-0.211658,2.009400,0.264670,0.593422,1.957987,0.671015,-0.304906,1.963913,-0.453371,-0.254827,2.056942,-0.722351,1.117325,1.179652,1.147844,0.014021,1.809901,0.730923,-0.489246,1.814002,0.901074,1.330752,1.564179,0.219393,0.806053,1.189045,1.369823,0.094428,1.602884,1.295949,0.194311,1.313760,-1.744353,0.508955,1.686505,-1.261126,1.101034,0.932872,-1.442662,0.920834,1.638200,-1.127247,1.791545,1.121751,-0.525987,1.440150,1.463336,-0.456394,0.581531,1.930462,-0.490814,1.684281,0.573206,-0.895700,1.698047,0.900040,-0.651430,1.823223,0.862878,-0.223409,1.735850,1.022671,-0.743646,1.939530,0.766132,-0.397782,1.676198,0.725621,-0.786933,-1.259745,1.101372,1.130974,-0.929899,1.900146,0.556532,0.601741,1.925359,0.870883,1.160364,1.398289,1.062392,1.637136,1.063004,0.508937,1.429201,1.254840,-1.096336,0.611613,1.327271,-1.429318,1.101628,1.484545,-0.655686,1.281007,1.297832,-1.058300,1.533207,0.798981,-1.333963,0.887798,0.797692,-1.614337,1.220438,0.707335,-1.531867,1.305416,1.588658,-0.228719,0.349074,2.059293,0.046099,0.983219,1.776531,0.384299,1.477116,1.260641,-0.232451,1.170868,1.821488,-0.310724,1.216834,1.271340,1.020094,1.515922,1.352522,0.699065];
+      function toggle_label(index, labels, positions) {
+        var existing = document.getElementById("label"+index);
+        if (existing) {
+          document.getElementById("audioOff").play();
+          existing.parentElement.removeChild(existing);
+        }
+        else {
+          document.getElementById("audioOn").play();
+          var entity = document.createElement("a-entity");
+          entity.setAttribute("id", "label"+index);
+          entity.setAttribute("look-at", "#camera");
+          entity.setAttribute("position", {x: positions[index*3], y: positions[index*3+1], z: positions[index*3+2]});
+          entity.setAttribute("scale", {x: 0.200000, y: 0.200000, z: 0.200000});
+          entity.setAttribute("text", {anchor: "left", baseline: "bottom", color: "#000000", value: labels[index]});
+          document.querySelector("a-scene").appendChild(entity);
+        }
+      }
+      function find_nearest(position, positions) {
+        var nearest_d = 1000.0;
+        var nearest_i = null;
+        for (let i = 0; i < node_positions.length; i += 3) {
+          let d = Math.sqrt((position.x-positions[i])**2+(position.y-positions[i+1])**2+(position.z-positions[i+2])**2);
+          if (d < nearest_d) {
+            nearest_d = d;
+            nearest_i = i/3;
+          }
+        }
+        if (nearest_d < 0.1) {
+          toggle_label(nearest_i, node_names, positions);
+        }
+      }
+      document.getElementById("leftController").addEventListener("gripdown", function (event) {
+        find_nearest(document.getElementById("leftController").getAttribute("position"), node_positions);
+      });
+      document.getElementById("rightController").addEventListener("gripdown", function (event) {
+        find_nearest(document.getElementById("rightController").getAttribute("position"), node_positions);
+      });
+      document.getElementById("leftHand").addEventListener("pinchstarted", function (event) {
+        find_nearest(event.detail.position, node_positions);
+      });
+      document.getElementById("rightHand").addEventListener("pinchstarted", function (event) {
+        find_nearest(event.detail.position, node_positions);
+      });
+    </script>
+  </body>
+</html>
