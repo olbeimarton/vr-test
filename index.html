@@ -14,11 +14,12 @@
     <a-scene background="color: #FFFFFF;">
       <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
       <a-entity light="type: ambient;"></a-entity>
-      <a-entity id="leftController" hand-controls="hand: left; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
-      <a-entity id="rightController" hand-controls="hand: right; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
+      <a-entity id="leftController" oculus-touch-controls="hand: left"></a-entity>
+      <a-entity id="rightController" oculus-touch-controls="hand: right" raycaster="objects: .raycaster-target, .environmentGround;"
+      raycaster-extras="controllerListenerId: #controller-data; beamImageSrc: #gradient; beamLength: 0.5;"></a-entity>
       <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
       <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
-      <a-circle position="0.0 0.0 0.0" radius="2.200000" rotation="-90 0 0" color="#F0F0F0"></a-circle>
+      <a-circle position="0.0 0.0 0.0" radius="2.200000" rotation="-90 0 0" color="#F0F0F0" raycaster-target></a-circle>
       <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.020000" edge_opacity="0.2" src="url(fava_light.ply)" raycaster-target></a-network>
     </a-scene>
     <script>
