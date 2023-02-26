@@ -3,10 +3,40 @@
   <head>
     <script src="aframe-master.min.js"></script>
     <script src="aframe-network-component.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
-    <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.0/dist/aframe-extras.min.js"></script>
     <script>
-      AFRAME.registerComponent("look-at", {schema: {type: "selector"}, init: function () {}, tick: function () {this.el.object3D.lookAt(this.data.object3D.position);}});
+      AFRAME.registerComponent("look-at", {
+        schema: {type: "selector"},
+        init: function () {},
+        tick: function () {
+          this.el.object3D.lookAt(this.data.object3D.position);
+        }
+      });
+    </script>
+    <script>
+      AFRAME.registerComponent('draggable', {
+        init: function () {
+          this.el.setAttribute('super-hands', {
+            colliderEvent: 'raycaster-intersection',
+          });
+          this.el.setAttribute('grab-options', {
+            colliderEvent: 'raycaster-intersection',
+          });
+          this.el.addEventListener('grab-start', function (evt) {
+            var hand = evt.detail.hand;
+            this.setAttribute('data-grabbed-by', hand.id);
+          });
+          this.el.addEventListener('grab-end', function (evt) {
+            this.removeAttribute('data-grabbed-by');
+          });
+          this.el.addEventListener('drag-move', function (evt) {
+            var hand = evt.detail.hand;
+            var intersection = evt.detail.intersection;
+            var newPosition = intersection.point;
+            this.object3D.position.copy(newPosition);
+          });
+        }
+      });
     </script>
   </head>
   <body>
@@ -20,74 +50,108 @@
       <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
       <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
       <a-circle position="0.0 0.0 0.0" radius="2.200000" rotation="-90 0 0" color="#F0F0F0"></a-circle>
-      <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.080000" edge_opacity="0.2" src="url(fava_light.ply)" super-hands></a-network>
-    </a-scene>
-    <script>
-      const node_names = ["BPNT1","RACGAP1"];
-      const node_positions = [-0.684681,0.229279,-2.061385,0.128368,0.226768,2.144488];
-      function toggle_label(index, labels, positions) {
-  var existing = document.getElementById("label"+index);
-  if (existing) {
-    document.getElementById("audioOff").play();
-    existing.parentElement.removeChild(existing);
-  }
-  else {
-    document.getElementById("audioOn").play();
-    var entity = document.createElement("a-entity");
-    entity.setAttribute("id", "label"+index);
-    entity.setAttribute("look-at", "#camera");
-    entity.setAttribute("position", {x: positions[index*3], y: positions[index*3+1], z: positions[index*3+2]});
-    entity.setAttribute("scale", {x: 0.200000, y: 0.200000, z: 0.200000});
-    entity.setAttribute("text", {anchor: "left", baseline: "bottom", color: "#000000", value: labels[index]});
-    document.querySelector("a-scene").appendChild(entity);
-  }
-}
+      <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.080000" edge_opacity="0.2" src="url(fava_light.ply)">
+        <a-entity id="node1" class="draggable" position="-0.684681 0.229279 -2.061385" radius="0.08" material="color: red"></a-entity>
+        <a-entity id="node2" class="draggable" position="0.128368 0.226768 2.144488" radius="0.08" material="color:
+        <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.080000" edge_opacity="0.2" src="url(fava_light.ply)" super-hands></a-network>
 
-function find_nearest(position, positions) {
-  var nearest_d = 1000.0;
-  var nearest_i = null;
-  for (let i = 0; i < node_positions.length; i += 3) {
-    let d = Math.sqrt((position.x-positions[i])**2+(position.y-positions[i+1])**2+(position.z-positions[i+2])**2);
-    if (d < nearest_d) {
-      nearest_d = d;
-      nearest_i = i/3;
+        <script>
+          const node_names = ["BPNT1","RACGAP1"];
+          const node_positions = [-0.684681,0.229279,-2.061385,0.128368,0.226768,2.144488];
+          
+          AFRAME.registerComponent("move-node", {
+            schema: {
+              index: { type: "number" },
+              positions: { type: "array" }
+            },
+            init: function () {
+              this.controller = null;
+              this.grabbing = false;
+            },
+            play: function () {
+              const controllerName = this.el.getAttribute("hand-controls").hand;
+              this.controller = document.querySelector(`#${controllerName}Controller`);
+              this.controller.addEventListener("gripdown", this.startGrab.bind(this));
+              this.controller.addEventListener("gripup", this.endGrab.bind(this));
+            },
+            pause: function () {
+              this.controller.removeEventListener("gripdown", this.startGrab.bind(this));
+              this.controller.removeEventListener("gripup", this.endGrab.bind(this));
+              this.controller = null;
+            },
+            startGrab: function () {
+              this.grabbing = true;
+            },
+            endGrab: function () {
+              this.grabbing = false;
+            },
+            tick: function () {
+              if (this.grabbing) {
+                const position = this.controller.getAttribute("position");
+                this.data.positions[this.data.index * 3] = position.x;
+                this.data.positions[this.data.index * 3 + 1] = position.y;
+                this.data.positions[this.data.index * 3 + 2] = position.z;
+                this.el.setAttribute("positions", this.data.positions);
+              }
+            }
+          });
+        
+          AFRAME.registerComponent("move-all-nodes", {
+            schema: {
+              positions: { type: "array" }
+            },
+            init: function () {
+              this.controller = null;
+              this.grabbing = false;
+            },
+            play: function () {
+              const controllerName = this.el.getAttribute("hand-controls").hand;
+              this.controller = document.querySelector(`#${controllerName}Controller`);
+              this.controller.addEventListener("gripdown", this.startGrab.bind(this));
+              this.controller.addEventListener("gripup", this.endGrab.bind(this));
+            },
+            pause: function () {
+              this.controller.removeEventListener("gripdown", this.startGrab.bind(this));
+              this.controller.removeEventListener("gripup", this.endGrab.bind(this));
+              this.controller = null;
+            },
+            startGrab: function () {
+              this.grabbing = true;
+            },
+            endGrab: function () {
+              this.grabbing = false;
+            },
+            tick: function () {
+              if (this.grabbing) {
+                const position = this.controller.getAttribute("position");
+                const nodes = this.el.getAttribute("positions");
+                for (let i = 0; i < nodes.length; i += 3) {
+                  nodes[i] += position.x - this.prevPosition.x;
+                  nodes[i + 1] += position.y - this.prevPosition.y;
+                  nodes[i + 2] += position.z - this.prevPosition.z;
+                }
+                this.el.setAttribute("positions", nodes);
+                this.prevPosition = position;
+              }
+            }
+          });
+        
+          const network = document.querySelector("a-network");
+          network.addEventListener("network-loaded", () =>
+          var network = document.querySelector("a-network");
+    var nodes = network.components.network.nodes;
+    for (let i = 0; i < nodes.length; i++) {
+      let node = nodes[i];
+      let position = node.position;
+      node.setAttribute("dynamic-body", "shape: sphere; sphereRadius: 0.1; mass: 0.5");
+      node.setAttribute("super-hands", "colliderEvent: collisions; colliderEventProperty: els; colliderEndEvent: collisions; colliderEndEventProperty: clearedEls");
+      node.addEventListener("grab-start", function (event) {
+        this.setAttribute("dynamic-body", "mass: 10");
+      });
+      node.addEventListener("grab-end", function (event) {
+        this.setAttribute("dynamic-body", "mass: 0.5");
+      });
     }
-  }
-  if (nearest_d < 0.1) {
-    const superHands = document.querySelector("#superHands");
-    superHands.setAttribute("pinchmove", function(event) {
-      positions[nearest_i*3] = event.detail.position.x;
-      positions[nearest_i*3+1] = event.detail.position.y;
-      positions[nearest_i*3+2] = event.detail.position.z;
-      const label = document.getElementById("label"+nearest_i);
-      if (label) {
-        label.setAttribute("position", {x: positions[nearest_i*3], y: positions[nearest_i*3+1], z: positions[nearest_i*3+2]});
-      }
-    });
-  }
-}
-
-function move_node_start(event) {
-  let node_entity = event.detail.intersectedEl;
-  if (node_entity) {
-    let hand_entity = event.detail.hand;
-    hand_entity.grabbing = node_entity;
-  }
-}
-
-document.getElementById("leftController").addEventListener("gripdown", function (event) {
-  find_nearest(document.getElementById("leftController").getAttribute("position"), node_positions);
-});
-document.getElementById("rightController").addEventListener("gripdown", function (event) {
-  find_nearest(document.getElementById("rightController").getAttribute("position"), node_positions);
-});
-document.getElementById("leftHand").addEventListener("pinchstarted", function (event) {
-  find_nearest(event.detail.position, node_positions);
-});
-document.getElementById("rightHand").addEventListener("pinchstarted", function (event) {
-  find_nearest(event.detail.position, node_positions);
-});
-document.querySelector('a-scene').addEventListener('grab-start', move_node_start);
-    </script>
-  </body>
+  </script>
+</body>
 </html>
