@@ -16,8 +16,12 @@
     <a-scene background="color: #FFFFFF;">
       <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
       <a-entity light="type: ambient;"></a-entity>
-      <a-entity id="leftController" sphere-collider="objects: a-box" super-hands hand-controls="hand: left"></a-entity>
-      <a-entity id="rightController" sphere-collider="objects: a-network" super-hands hand-controls="hand: right"></a-entity>
+      <a-entity sphere-collider="objects: a-box" super-hands hand-controls="hand: left"></a-entity>
+      <a-entity sphere-collider="objects: a-network" super-hands hand-controls="hand: right"></a-entity>
+      <a-entity id="leftController" hand-controls="hand: left; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
+      <a-entity id="rightController" hand-controls="hand: right; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
+      <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
+      <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
       <a-box hoverable grabbable stretchable draggable droppable color="blue" position="0 0.2 -1"></a-box>
       <a-circle position="0.0 0.0 0.0" radius="2.200000" rotation="-90 0 0" color="#777777"></a-circle>
       <a-network hoverable grabbable stretchable draggable droppable position="0.0 -0.7 0.0" rotation="0 0 0" node_size="0.080000" edge_opacity="0.2" src="url(fava_light.ply)" ></a-network>
