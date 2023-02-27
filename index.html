@@ -16,7 +16,8 @@
 
         <!-- Camera + controllers rig -->
         <a-entity id="rig">
-            <a-camera position="0 1.6 0"></a-camera>
+            <a-camera position="0 1.6 0" 
+        wasd-controls="fly: true; acceleration: 600;"></a-camera>
             <a-entity oculus-touch-controls="hand: left" raycaster="objects: [forcegraph]; showLine: true;" ></a-entity>
             <a-entity oculus-touch-controls="hand: right" raycaster="objects: [forcegraph]; showLine: true;" oculus-thumbstick-controls></a-entity>
         </a-entity>
@@ -36,6 +37,9 @@
         json-url: lab.json;
         node-rel-size: 0.5;
         node-auto-color-by: group;
+        link-curvature: 1;
+        link-directional-particles: 4;
+        link-directional-particle-width: 0.1;
         link-directional-arrow-length: 1.5;
         link-directional-arrow-rel-pos: 1;
         on-node-hover: node => document.querySelector('#forcegraph-tooltip').setAttribute('value', node ? node.name : '');
