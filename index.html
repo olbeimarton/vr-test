@@ -6,6 +6,12 @@
 
 <body>
   <a-scene>
-    <a-entity forcegraph="json-url: lab.json"></a-entity>
+    <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
+    <a-entity forcegraph="
+        json-url: lab.json;
+        num-dimensions: 2;
+        node-auto-color-by: group;
+        on-node-hover: node => document.querySelector('#forcegraph-tooltip').setAttribute('value', node ? node.id : '');
+      "></a-entity>
   </a-scene>
 </body>
