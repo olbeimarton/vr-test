@@ -2,11 +2,17 @@
   <title>My A-Frame Scene</title>
   <script src="https://unpkg.com/aframe"></script>
   <script src="https://unpkg.com/aframe-forcegraph-component"></script>
+  <script src="https://gftruj.github.io/webzamples/aframe/controls/oculus-thumbstick-controls.js"></script>
+
 </head>
 
 <body>
   <a-scene>
-    <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
+    <a-entity id="rig">
+      <a-camera position="0 1.6 0"></a-camera>
+      <a-entity oculus-touch-controls="hand: left" ></a-entity>
+      <a-entity oculus-touch-controls="hand: right" oculus-thumbstick-controls></a-entity>
+    </a-entity>
     <a-entity forcegraph="
         json-url: lab.json;
         num-dimensions: 2;
