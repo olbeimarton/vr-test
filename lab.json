@@ -1,0 +1,74 @@
+{
+    "nodes": [ 
+        { 
+          "id": "id1",
+          "name": "Tamas",
+          "val": 10 
+        },
+        { 
+          "id": "id2",
+          "name": "Isa",
+          "val": 7 
+        },
+        { 
+          "id": "id3",
+          "name": "Dezso",
+          "val": 7 
+        },
+        { 
+          "id": "id4",
+          "name": "Leila",
+          "val": 7 
+        },
+        { 
+          "id": "id5",
+          "name": "Marton",
+          "val": 7 
+        },
+        { 
+          "id": "id6",
+          "name": "Matthew",
+          "val": 7 
+        },
+        { 
+          "id": "id7",
+          "name": "Martina",
+          "val": 7 
+        },
+        { 
+          "id": "id8",
+          "name": "Aggie",
+          "val": 7 
+        }
+    ],
+    "links": [
+        {
+            "source": "id1",
+            "target": "id2"
+        },
+        {
+            "source": "id1",
+            "target": "id3"
+        },
+        {
+            "source": "id1",
+            "target": "id4"
+        },
+        {
+            "source": "id1",
+            "target": "id5"
+        },
+        {
+            "source": "id1",
+            "target": "id6"
+        },
+        {
+            "source": "id1",
+            "target": "id7"
+        },
+        {
+            "source": "id1",
+            "target": "id8"
+        }
+    ]
+}
