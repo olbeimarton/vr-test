@@ -17,8 +17,8 @@
         <!-- Camera + controllers rig -->
         <a-entity id="rig">
             <a-camera position="0 1.6 0"></a-camera>
-            <a-entity oculus-touch-controls="hand: left" raycaster="objects: [forcegraph]; lineColor: steelblue; lineOpacity: 0.85;" ></a-entity>
-            <a-entity oculus-touch-controls="hand: right" raycaster="objects: [forcegraph]; lineColor: steelblue; lineOpacity: 0.85;" oculus-thumbstick-controls></a-entity>
+            <a-entity oculus-touch-controls="hand: left" raycaster="objects: [forcegraph]; showLine: true;" ></a-entity>
+            <a-entity oculus-touch-controls="hand: right" raycaster="objects: [forcegraph]; showLine: true;" oculus-thumbstick-controls></a-entity>
         </a-entity>
 
 
@@ -26,7 +26,7 @@
       <a-text
         id="forcegraph-tooltip"
         position="0 -0.25 -1"
-        width="2"
+        width="6"
         align="center"
         color="lavender"
       ></a-text>
@@ -34,6 +34,7 @@
       <a-entity
         forcegraph="
         json-url: lab.json;
+        node-rel-size: 0.5;
         node-auto-color-by: group;
         link-directional-arrow-length: 1.5;
         link-directional-arrow-rel-pos: 1;
