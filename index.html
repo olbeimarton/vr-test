@@ -14,9 +14,11 @@
       <a-entity id="rig">
         <a-camera position="0 1.6 0" look-controls="pointerLockEnabled: false"
         wasd-controls="fly: true; acceleration: 600;" ></a-camera>
-        <a-entity oculus-touch-controls="hand: left" raycaster="objects: [forcegraph]; lineColor: steelblue; lineOpacity: 0.85; ></a-entity>
-        <a-entity oculus-touch-controls="hand: right" raycaster="objects: [forcegraph]; lineColor: steelblue; lineOpacity: 0.85; oculus-thumbstick-controls></a-entity>
-    </a-entity>      
+        <a-entity oculus-touch-controls="hand: left" raycaster="objects: [forcegraph]; lineColor: steelblue; lineOpacity: 0.85;" ></a-entity>
+        <a-entity oculus-touch-controls="hand: right" raycaster="objects: [forcegraph]; lineColor: steelblue; lineOpacity: 0.85; oculus-thumbstick-controls">
+      </a-entity>
+        </a-entity>
+    
     <a-entity light="type: ambient;"></a-entity>
           
     
@@ -27,7 +29,7 @@
           align="center"
           color="lavender"
         ></a-text>
-      </a-camera>
+
 
       <a-entity forcegraph="
         json-url: lab.json;
@@ -35,9 +37,8 @@
         link-directional-arrow-length: 1.5;
         link-directional-arrow-rel-pos: 1;
         on-node-hover: node => document.querySelector('#forcegraph-tooltip').setAttribute('value', node ? node.name : '');
-        on-node-click: node => document.querySelector('#forcegraph-tooltip').setAttribute('value', `Clicked on ${node.name}!`);
-      "></a-entity>
-    </a-scene>
+        on-node-click: node => document.querySelector('#forcegraph-tooltip').setAttribute('value', `Clicked on ${node.name}!`);"></a-entity>
+  </a-scene>
 
     
   </body>
