@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>A-Frame 3D Force-Directed Graph Component - Basic</title>
     <script src="https://unpkg.com/aframe"></script>
-  <script src="https://unpkg.com/aframe-forcegraph-component"></script>
-  <script src="https://gftruj.github.io/webzamples/aframe/controls/oculus-thumbstick-controls.js"></script>
-
+    <script src="https://unpkg.com/aframe-forcegraph-component"></script>
+    <script src="https://gftruj.github.io/webzamples/aframe/controls/oculus-thumbstick-controls.js"></script>
   </head>
   <body>
     <a-scene background="color: #002" stats>
-      <a-entity cursor="rayOrigin:mouse; mouseCursorStylesEnabled: true;" raycaster="objects: [forcegraph];"></a-entity>
-      <a-entity id="rig">
-        <a-camera position="0 1.6 0" look-controls="pointerLockEnabled: false"
-        wasd-controls="fly: true; acceleration: 600;" ></a-camera>
-        <a-entity oculus-touch-controls="hand: left" raycaster="objects: [forcegraph]; lineColor: steelblue; lineOpacity: 0.85;" ></a-entity>
-        <a-entity oculus-touch-controls="hand: right" raycaster="objects: [forcegraph]; lineColor: steelblue; lineOpacity: 0.85; oculus-thumbstick-controls">
-      </a-entity>
+      
+        <!-- Default lights overriden by the environment components-->
+        <a-entity light="type: ambient; color: #BBB"></a-entity>
+        <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 1"></a-entity>
+
+        <!-- Camera + controllers rig -->
+        <a-entity id="rig">
+            <a-camera position="0 1.6 0"></a-camera>
+            <a-entity oculus-touch-controls="hand: left" raycaster="objects: [forcegraph]; lineColor: steelblue; lineOpacity: 0.85;" ></a-entity>
+            <a-entity oculus-touch-controls="hand: right" raycaster="objects: [forcegraph]; lineColor: steelblue; lineOpacity: 0.85;" oculus-thumbstick-controls></a-entity>
         </a-entity>
-    
-    <a-entity light="type: ambient;"></a-entity>
-          
-    
-        <a-text
-          id="forcegraph-tooltip"
-          position="0 -0.25 -1"
-          width="2"
-          align="center"
-          color="lavender"
-        ></a-text>
 
 
-      <a-entity forcegraph="
+
+      <a-text
+        id="forcegraph-tooltip"
+        position="0 -0.25 -1"
+        width="2"
+        align="center"
+        color="lavender"
+      ></a-text>
+
+      <a-entity
+        forcegraph="
         json-url: lab.json;
         node-auto-color-by: group;
         link-directional-arrow-length: 1.5;
         link-directional-arrow-rel-pos: 1;
         on-node-hover: node => document.querySelector('#forcegraph-tooltip').setAttribute('value', node ? node.name : '');
-        on-node-click: node => document.querySelector('#forcegraph-tooltip').setAttribute('value', `Clicked on ${node.name}!`);"></a-entity>
-  </a-scene>
-
-    
+        on-node-click: node => document.querySelector('#forcegraph-tooltip').setAttribute('value', `Clicked on ${node.name}!`);"
+      ></a-entity>
+    </a-scene>
   </body>
 </html>
