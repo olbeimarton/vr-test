@@ -1,30 +1,11 @@
 <head>
-  <style> body { margin: 0; } </style>
-
-  <script src="//unpkg.com/3d-force-graph-vr"></script>
-  <!--<script src="../../dist/3d-force-graph-vr.js"></script>-->
-
-  <script src="//unpkg.com/three-spritetext"></script>
+  <title>My A-Frame Scene</title>
+  <script src="https://unpkg.com/aframe"></script>
+  <script src="https://unpkg.com/aframe-forcegraph-component"></script>
 </head>
 
 <body>
-  <div id="3d-graph"></div>
-
-  <script>
-    const Graph = ForceGraphVR()
-      (document.getElementById('3d-graph'))
-        .jsonUrl('lab.json')
-        .linkCurvature('curvature')
-        .linkCurveRotation('rotation')
-        .linkDirectionalParticles(2)
-        .nodeAutoColorBy('group')
-        .backgroundColor('#777777')
-        .nodeLabel('name')
-        .nodeThreeObject(node => {
-          const sprite = new SpriteText(node.id);
-          sprite.color = node.color;
-          sprite.textHeight = 8;
-          return sprite;
-        });
-  </script>
+  <a-scene>
+    <a-entity forcegraph="json-url: lab.json"></a-entity>
+  </a-scene>
 </body>
