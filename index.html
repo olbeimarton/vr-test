@@ -3,6 +3,7 @@
   <head>
     <script src="aframe-master.min.js"></script>
     <script src="aframe-network-component.js"></script>
+    <script src="https://unpkg.com/super-hands/dist/super-hands.min.js"></script>
     <script>
       AFRAME.registerComponent("look-at", {schema: {type: "selector"}, init: function () {}, tick: function () {this.el.object3D.lookAt(this.data.object3D.position);}});
     </script>
@@ -11,6 +12,9 @@
     <audio id="audioOn" src="click_on.wav"></audio>
     <audio id="audioOff" src="click_off.wav"></audio>
     <a-scene background="color: #000000;">
+      <a-entity movement-controls="fly: true" position="0 0 0"></a-entity>
+      <a-entity cursor="rayOrigin:mouse"></a-entity>
+      <a-entity laser-controls="hand: right"></a-entity>
       <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
       <a-entity light="type: ambient;"></a-entity>
       <a-entity id="leftController" hand-controls="hand: left; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
@@ -18,7 +22,12 @@
       <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
       <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
       <a-circle position="0.0 0.0 0.0" radius="2.200000" rotation="-90 0 0" color="#0F0F0F"></a-circle>
-      <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.020000" edge_opacity="0.2" src="url(vr.ply)"></a-network>
+      <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.020000" edge_opacity="0.2" src="url(vr.ply)" shadow
+      animation__enter="startEvents: mouseenter; property: scale;
+        to: 2 2 2; dur: 1000"
+      animation__leave="startEvents: mouseleave; property: scale;
+        to: 1 1 1; dur: 1000">
+        from: 2 2 2; to: 1 1 1; dur: 1000"></a-network>
     </a-scene>
     <script>
       const node_names = ["Node 7","Node 6","Node 5","Node 4"];
