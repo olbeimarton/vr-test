@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>A-Frame 3D Force-Directed Graph Component - Basic</title>
+    <title>Lates test</title>
     <script src="https://unpkg.com/aframe"></script>
     <script src="https://unpkg.com/aframe-forcegraph-component"></script>
     <script src="https://gftruj.github.io/webzamples/aframe/controls/oculus-thumbstick-controls.js"></script>
@@ -20,22 +20,10 @@
         wasd-controls="fly: true; acceleration: 600;"></a-camera>
             <a-entity oculus-touch-controls="hand: left" raycaster="objects: [forcegraph]; showLine: true;" ></a-entity>
             <a-entity oculus-touch-controls="hand: right" raycaster="objects: [forcegraph]; showLine: true;" oculus-thumbstick-controls></a-entity>
-        </a-entity>
-
-
-
-      <a-text
-        id="forcegraph-tooltip"
-        position="0 -0.25 -1"
-        width="6"
-        align="center"
-        color="lavender"
-      ></a-text>
-
-      <a-entity
+            <a-entity
         forcegraph="
         json-url: lab.json;
-        node-rel-size: 0.5;
+        node-rel-size: 0.25;
         node-auto-color-by: group;
         link-curvature: 1;
         link-directional-particles: 4;
@@ -45,6 +33,19 @@
         on-node-hover: node => document.querySelector('#forcegraph-tooltip').setAttribute('value', node ? node.name : '');
         on-node-click: node => document.querySelector('#forcegraph-tooltip').setAttribute('value', `Clicked on ${node.name}!`);"
       ></a-entity>
+        </a-entity>
+
+
+
+      <a-text
+        id="forcegraph-tooltip"
+        position="0 1 -1"
+        width="6"
+        align="center"
+        color="lavender"
+      ></a-text>
+
+      
     </a-scene>
   </body>
 </html>
