@@ -12,7 +12,8 @@
     <a-scene background="color: #002" stats>
       <a-entity cursor="rayOrigin:mouse"></a-entity>
       <a-entity id="rig">
-        <a-camera position="0 1.6 0"></a-camera>
+        <a-camera position="0 1.6 0" look-controls="pointerLockEnabled: false"
+        wasd-controls="fly: true; acceleration: 600;" ></a-camera>
         <a-entity oculus-touch-controls="hand: left" ></a-entity>
         <a-entity oculus-touch-controls="hand: right" oculus-thumbstick-controls></a-entity>
     </a-entity>      <a-entity light="type: ambient;"></a-entity>
@@ -21,10 +22,7 @@
       <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
       <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
       
-      <a-camera
-        look-controls="pointerLockEnabled: false"
-        wasd-controls="fly: true; acceleration: 600;"
-      >
+
       
         <!-- <a-cursor color="lavender" opacity="0.5" raycaster="objects: [forcegraph]"></a-cursor> -->
         <a-text
