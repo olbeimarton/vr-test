@@ -1,34 +1,35 @@
-
 <head>
-  <style> body { margin: 0; } </style>
-
-  <script src="//unpkg.com/3d-force-graph-vr"></script>
+  <title>My A-Frame Scene</title>
   <script src="https://unpkg.com/aframe"></script>
+  <script src="https://unpkg.com/aframe-forcegraph-component"></script>
   <script src="https://gftruj.github.io/webzamples/aframe/controls/oculus-thumbstick-controls.js"></script>
 
-  <!--<script src="../../dist/3d-force-graph-vr.js"></script>-->
-
-  <script src="//unpkg.com/three-spritetext"></script>
 </head>
 
 <body>
-  <div id="3d-graph"></div>
-  <a-entity id="rig">
-    <a-camera position="0 1.6 0"></a-camera>
-    <a-entity oculus-touch-controls="hand: left" ></a-entity>
-    <a-entity oculus-touch-controls="hand: right" oculus-thumbstick-controls></a-entity>
-  </a-entity>
-  <script>
-    const Graph = ForceGraphVR()
-      (document.getElementById('3d-graph'))
-        .jsonUrl('lab.json')
-        .nodeAutoColorBy('group')
-        .nodeThreeObject(node => {
-          const sprite = new SpriteText(node.id);
-          sprite.color = node.color;
-          sprite.textHeight = 8;
-          return sprite;
-        });
-
-  </script>
+  <a-scene>
+    <a-entity cursor="rayOrigin: mouse; mouseCursorStylesEnabled: true;" raycaster="objects: [forcegraph];"></a-entity>
+    <a-entity laser-controls="hand: left" raycaster="objects: [forcegraph]; lineColor: steelblue; lineOpacity: 0.85;"></a-entity>
+    <a-entity laser-controls="hand: right" raycaster="objects: [forcegraph]; lineColor: steelblue; lineOpacity: 0.85;"></a-entity>
+    <a-cursor color="lavender" opacity="0.5" raycaster="objects: [forcegraph]"></a-cursor>
+    <a-entity id="rig">
+      <a-camera look-controls="pointerLockEnabled: false"
+      wasd-controls="fly: true; acceleration: 600;"></a-camera>
+      <a-entity oculus-touch-controls="hand: left" ></a-entity>
+      <a-entity oculus-touch-controls="hand: right" oculus-thumbstick-controls></a-entity>
+    </a-entity>
+    <a-text
+    id="forcegraph-tooltip"
+    position="0 -0.25 -1"
+    width="2"
+    align="center"
+    color="lavender"
+  ></a-text>
+    <a-entity forcegraph="
+        json-url: lab.json;
+        num-dimensions: 3;
+        node-rel-size: 1;
+        on-node-hover: node => document.querySelector('#forcegraph-tooltip').setAttribute('value', node ? `${node.description} (${node.user})` : '');
+      "></a-entity>
+  </a-scene>
 </body>
