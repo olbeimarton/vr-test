@@ -5,13 +5,17 @@
     <title>A-Frame 3D Force-Directed Graph Component - Basic</title>
     <script src="https://unpkg.com/aframe"></script>
   <script src="https://unpkg.com/aframe-forcegraph-component"></script>
+  <script src="https://gftruj.github.io/webzamples/aframe/controls/oculus-thumbstick-controls.js"></script>
+
   </head>
   <body>
     <a-scene background="color: #002" stats>
       <a-entity cursor="rayOrigin:mouse"></a-entity>
-      <a-entity laser-controls="hand: right"></a-entity>
-      <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
-      <a-entity light="type: ambient;"></a-entity>
+      <a-entity id="rig">
+        <a-camera position="0 1.6 0"></a-camera>
+        <a-entity oculus-touch-controls="hand: left" ></a-entity>
+        <a-entity oculus-touch-controls="hand: right" oculus-thumbstick-controls></a-entity>
+    </a-entity>      <a-entity light="type: ambient;"></a-entity>
       <a-entity id="leftController" hand-controls="hand: left; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
       <a-entity id="rightController" hand-controls="hand: right; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
       <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
