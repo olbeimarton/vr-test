@@ -14,15 +14,15 @@
       <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
       <a-entity light="type: ambient;"></a-entity>
       <a-entity id="leftController" hand-controls="hand: left; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
-      <a-entity id="rightController" hand-controls="hand: right; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
+      <a-entity id="rightController" hand-controls="hand: right; handModelStyle: highPoly; color: #7F7F7F" oculus-thumbstick-controls></a-entity>
       <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
       <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
-      <a-circle position="0.0 0.0 0.0" radius="1.100000" rotation="-90 0 0" color="#0F0F0F"></a-circle>
-      <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.020000" edge_opacity="0.2" src="url(vr.ply)"></a-network>
+      <a-circle position="0.0 0.0 0.0" radius="2.200000" rotation="-90 0 0" color="#999999"></a-circle>
+      <a-network position="0.0 1.0 0.0" rotation="0 0 0" node_size="0.220000" edge_opacity="0.1" src="url(vr.ply)"></a-network>
     </a-scene>
     <script>
-      const node_names = ["theobromine","Xanthine","AFMU","CYP1A2","3,7-dimethyluric acid","NAT2","caffeine","paraxanthine","XDH","CYP1A2","1-methyluric acid","Purine metabolism","7-methylxanthine","CYP2A6","7-methyluric acid","XDH","XDH","1-methylxanthine","1,7-dimethyluric acid","CYP1A2","","","","","","",""];
-      const node_positions = [-0.808394,0.649613,-0.349635,0.649589,0.502273,-0.391757,-0.003006,0.536429,0.684128,0.318979,0.710254,0.439214,-0.693489,0.410180,-0.728091,0.344125,0.707801,0.653309,-0.005503,0.982713,-0.407544,-0.004949,0.909096,0.202227,0.834947,0.253030,0.324095,0.411196,0.891328,-0.096405,1.048874,0.000000,0.115953,0.899326,0.034609,-0.270311,0.764510,0.436619,-0.058226,-0.213755,0.777884,0.468380,-0.855425,0.000000,0.094567,-0.886609,0.229827,0.324596,-0.349213,0.593930,-0.511554,0.722250,0.588880,0.168769,-0.675155,0.507622,0.150047,-0.431031,0.649453,0.420272,-0.863230,0.259408,0.128549,-0.422904,0.988214,0.229355,1.015868,0.354368,0.158434,-0.005816,1.078545,-0.111495,-0.663152,0.472548,-0.504927,-0.004335,0.815842,0.712474,0.417204,0.980563,0.227475];
+      const node_names = ["theobromine","Xanthine","AFMU","CYP1A2","3,7-dimethyluric acid","NAT2","caffeine","paraxanthine","XDH","CYP1A2","1-methyluric acid","Purine metabolism","7-methylxanthine","CYP2A6","7-methyluric acid","XDH","XDH","1-methylxanthine","1,7-dimethyluric acid","CYP1A2"];
+      const node_positions = [-0.918003,1.411952,-1.986209,0.876541,1.570095,-1.912862,-0.004248,0.000000,-2.126845,0.367915,0.437393,-1.958144,-0.922814,2.000000,-1.996618,0.372624,0.224299,-1.983207,-0.005331,1.409191,-2.122719,-0.005278,0.774209,-2.101543,1.228851,0.437393,-1.587209,0.411430,1.105504,-1.983283,1.602552,0.774209,-1.199210,1.626514,1.570095,-1.394238,1.108766,1.090715,-1.843847,-0.242218,0.437393,-2.065995,-1.587669,0.774209,-1.188073,-1.314894,0.444886,-1.595740,-0.464768,1.723921,-2.034123,0.887927,0.774209,-1.889924,-0.907282,0.774209,-1.822948,-0.515743,0.437393,-1.921112,-1.307324,0.774209,-1.586589,-0.400214,0.774209,-2.089529,1.236014,0.774209,-1.598947,-0.004982,1.105929,-1.983804,-0.915820,1.725220,-1.981484,-0.004399,0.229047,-2.063229,0.385181,0.774209,-2.022063];
       function toggle_label(index, labels, positions) {
         var existing = document.getElementById("label"+index);
         if (existing) {
