@@ -10,15 +10,15 @@
   <body>
     <audio id="audioOn" src="click_on.wav"></audio>
     <audio id="audioOff" src="click_off.wav"></audio>
-    <a-scene background="color: #000000;">
+    <a-scene background="color: #444444;">
       <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
       <a-entity light="type: ambient;"></a-entity>
       <a-entity id="leftController" hand-controls="hand: left; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
-      <a-entity id="rightController" hand-controls="hand: right; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
+      <a-entity id="rightController" hand-controls="hand: right; handModelStyle: highPoly; color: #7F7F7F" oculus-thumbstick-controls></a-entity>
       <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
       <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
-      <a-circle position="0.0 0.0 0.0" radius="2.200000" rotation="-90 0 0" color="#0F0F0F"></a-circle>
-      <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.220000" edge_opacity="0.1" src="url(vr.ply)"></a-network>
+      <a-circle position="0.0 0.0 0.0" radius="2.200000" rotation="-90 0 0" color="#999999"></a-circle>
+      <a-network position="0.0 1.0 0.0" rotation="0 0 0" node_size="0.220000" edge_opacity="0.1" src="url(vr.ply)"></a-network>
     </a-scene>
     <script>
       const node_names = ["theobromine","Xanthine","AFMU","CYP1A2","3,7-dimethyluric acid","NAT2","caffeine","paraxanthine","XDH","CYP1A2","1-methyluric acid","Purine metabolism","7-methylxanthine","CYP2A6","7-methyluric acid","XDH","XDH","1-methylxanthine","1,7-dimethyluric acid","CYP1A2","","","","","","",""];
