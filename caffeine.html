@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="aframe-master.min.js"></script>
+    <script src="aframe-network-component.js"></script>
+    <script>
+      AFRAME.registerComponent("look-at", {schema: {type: "selector"}, init: function () {}, tick: function () {this.el.object3D.lookAt(this.data.object3D.position);}});
+    </script>
+  </head>
+  <body>
+    <audio id="audioOn" src="click_on.wav"></audio>
+    <audio id="audioOff" src="click_off.wav"></audio>
+    <a-scene background="color: #444444;">
+      <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
+      <a-entity light="type: ambient;"></a-entity>
+      <a-entity id="leftController" hand-controls="hand: left; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
+      <a-entity id="rightController" hand-controls="hand: right; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
+      <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
+      <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
+      <a-circle position="0.0 0.0 0.0" radius="1.100000" rotation="-90 0 0" color="#0F0F0F"></a-circle>
+      <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.020000" edge_opacity="0.2" src="url(vr.ply)"></a-network>
+    </a-scene>
+    <script>
+      const node_names = ["theobromine","Xanthine","AFMU","CYP1A2","3,7-dimethyluric acid","NAT2","caffeine","paraxanthine","XDH","CYP1A2","1-methyluric acid","Purine metabolism","7-methylxanthine","CYP2A6","7-methyluric acid","XDH","XDH","1-methylxanthine","1,7-dimethyluric acid","CYP1A2","","","","","","",""];
+      const node_positions = [-0.808394,0.649613,-0.349635,0.649589,0.502273,-0.391757,-0.003006,0.536429,0.684128,0.318979,0.710254,0.439214,-0.693489,0.410180,-0.728091,0.344125,0.707801,0.653309,-0.005503,0.982713,-0.407544,-0.004949,0.909096,0.202227,0.834947,0.253030,0.324095,0.411196,0.891328,-0.096405,1.048874,0.000000,0.115953,0.899326,0.034609,-0.270311,0.764510,0.436619,-0.058226,-0.213755,0.777884,0.468380,-0.855425,0.000000,0.094567,-0.886609,0.229827,0.324596,-0.349213,0.593930,-0.511554,0.722250,0.588880,0.168769,-0.675155,0.507622,0.150047,-0.431031,0.649453,0.420272,-0.863230,0.259408,0.128549,-0.422904,0.988214,0.229355,1.015868,0.354368,0.158434,-0.005816,1.078545,-0.111495,-0.663152,0.472548,-0.504927,-0.004335,0.815842,0.712474,0.417204,0.980563,0.227475];
+      function toggle_label(index, labels, positions) {
+        var existing = document.getElementById("label"+index);
+        if (existing) {
+          document.getElementById("audioOff").play();
+          existing.parentElement.removeChild(existing);
+        }
+        else {
+          document.getElementById("audioOn").play();
+          var entity = document.createElement("a-entity");
+          entity.setAttribute("id", "label"+index);
+          entity.setAttribute("look-at", "#camera");
+          entity.setAttribute("position", {x: positions[index*3], y: positions[index*3+1], z: positions[index*3+2]});
+          entity.setAttribute("scale", {x: 0.200000, y: 0.200000, z: 0.200000});
+          entity.setAttribute("text", {anchor: "left", baseline: "bottom", color: "#FF00FF", value: labels[index]});
+          document.querySelector("a-scene").appendChild(entity);
+        }
+      }
+      function find_nearest(position, positions) {
+        var nearest_d = 1000.0;
+        var nearest_i = null;
+        for (let i = 0; i < node_positions.length; i += 3) {
+          let d = Math.sqrt((position.x-positions[i])**2+(position.y-positions[i+1])**2+(position.z-positions[i+2])**2);
+          if (d < nearest_d) {
+            nearest_d = d;
+            nearest_i = i/3;
+          }
+        }
+        if (nearest_d < 0.1) {
+          toggle_label(nearest_i, node_names, positions);
+        }
+      }
+      document.getElementById("leftController").addEventListener("gripdown", function (event) {
+        find_nearest(document.getElementById("leftController").getAttribute("position"), node_positions);
+      });
+      document.getElementById("rightController").addEventListener("gripdown", function (event) {
+        find_nearest(document.getElementById("rightController").getAttribute("position"), node_positions);
+      });
+      document.getElementById("leftHand").addEventListener("pinchstarted", function (event) {
+        find_nearest(event.detail.position, node_positions);
+      });
+      document.getElementById("rightHand").addEventListener("pinchstarted", function (event) {
+        find_nearest(event.detail.position, node_positions);
+      });
+    </script>
+  </body>
+</html>

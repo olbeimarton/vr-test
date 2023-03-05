@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="aframe-master.min.js"></script>
+    <script src="aframe-network-component.js"></script>
+    <script>
+      AFRAME.registerComponent("look-at", {schema: {type: "selector"}, init: function () {}, tick: function () {this.el.object3D.lookAt(this.data.object3D.position);}});
+    </script>
+  </head>
+  <body>
+    <audio id="audioOn" src="click_on.wav"></audio>
+    <audio id="audioOff" src="click_off.wav"></audio>
+    <a-scene background="color: #000000;">
+      <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
+      <a-entity light="type: ambient;"></a-entity>
+      <a-entity id="leftController" hand-controls="hand: left; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
+      <a-entity id="rightController" hand-controls="hand: right; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
+      <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
+      <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
+      <a-circle position="0.0 0.0 0.0" radius="1.100000" rotation="-90 0 0" color="#0F0F0F"></a-circle>
+      <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.020000" edge_opacity="0.2" src="url(Insulin.ply)"></a-network>
+    </a-scene>
+    <script>
+      const node_names = ["GLUT1","AMPK","p70S6K","GLUCOSE","GLUT4","AS160","GS","MTOR","GSK-3","AKT","PDK1","PI3K","IRS-1","IR","Insulin"];
+      const node_positions = [0.641282,0.456552,-0.451488,0.435928,0.691589,-0.404420,-0.515253,0.697954,-0.272819,0.878217,0.000000,-0.358011,0.950229,0.447517,-0.195406,0.723482,0.804636,-0.119826,0.425557,0.705852,0.666619,-0.186539,0.972580,-0.329491,0.357593,0.836904,0.290615,0.257100,0.988416,-0.127159,-0.119577,0.873867,0.118054,-0.555907,0.870996,0.207407,-0.745241,0.602275,-0.018238,-0.872826,0.326207,0.066714,-1.019532,0.074374,0.094704];
+      function toggle_label(index, labels, positions) {
+        var existing = document.getElementById("label"+index);
+        if (existing) {
+          document.getElementById("audioOff").play();
+          existing.parentElement.removeChild(existing);
+        }
+        else {
+          document.getElementById("audioOn").play();
+          var entity = document.createElement("a-entity");
+          entity.setAttribute("id", "label"+index);
+          entity.setAttribute("look-at", "#camera");
+          entity.setAttribute("position", {x: positions[index*3], y: positions[index*3+1], z: positions[index*3+2]});
+          entity.setAttribute("scale", {x: 0.200000, y: 0.200000, z: 0.200000});
+          entity.setAttribute("text", {anchor: "left", baseline: "bottom", color: "#FFFFFF", value: labels[index]});
+          document.querySelector("a-scene").appendChild(entity);
+        }
+      }
+      function find_nearest(position, positions) {
+        var nearest_d = 1000.0;
+        var nearest_i = null;
+        for (let i = 0; i < node_positions.length; i += 3) {
+          let d = Math.sqrt((position.x-positions[i])**2+(position.y-positions[i+1])**2+(position.z-positions[i+2])**2);
+          if (d < nearest_d) {
+            nearest_d = d;
+            nearest_i = i/3;
+          }
+        }
+        if (nearest_d < 0.1) {
+          toggle_label(nearest_i, node_names, positions);
+        }
+      }
+      document.getElementById("leftController").addEventListener("gripdown", function (event) {
+        find_nearest(document.getElementById("leftController").getAttribute("position"), node_positions);
+      });
+      document.getElementById("rightController").addEventListener("gripdown", function (event) {
+        find_nearest(document.getElementById("rightController").getAttribute("position"), node_positions);
+      });
+      document.getElementById("leftHand").addEventListener("pinchstarted", function (event) {
+        find_nearest(event.detail.position, node_positions);
+      });
+      document.getElementById("rightHand").addEventListener("pinchstarted", function (event) {
+        find_nearest(event.detail.position, node_positions);
+      });
+    </script>
+  </body>
+</html>
