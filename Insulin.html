@@ -10,19 +10,19 @@
   <body>
     <audio id="audioOn" src="click_on.wav"></audio>
     <audio id="audioOff" src="click_off.wav"></audio>
-    <a-scene background="color: #000000;">
+    <a-scene background="color: #FFFFFF;">
       <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
       <a-entity light="type: ambient;"></a-entity>
       <a-entity id="leftController" hand-controls="hand: left; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
       <a-entity id="rightController" hand-controls="hand: right; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
       <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
       <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
-      <a-circle position="0.0 0.0 0.0" radius="1.500000" rotation="-90 0 0" color="#0F0F0F"></a-circle>
+      <a-circle position="0.0 0.0 0.0" radius="2.200000" rotation="-90 0 0" color="#F0F0F0"></a-circle>
       <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.020000" edge_opacity="0.2" src="url(insulin.ply)"></a-network>
     </a-scene>
     <script>
       const node_names = ["GLUT1","AMPK","p70S6K","GLUCOSE","GLUT4","AS160","GS","MTOR","GSK-3","AKT","PDK1","PI3K","IRS-1","IR","Insulin"];
-      const node_positions = [1.006951,1.876818,-0.920401,0.617879,1.668047,-1.186651,-0.672898,1.449619,-1.058863,1.255226,2.000000,0.081158,1.253665,1.341478,-0.627007,0.829742,1.167655,-1.036962,0.582446,0.000000,-1.284927,-0.234497,1.432898,-1.422417,0.456534,0.570461,-1.241590,0.334196,1.166955,-1.459882,-0.165423,0.822690,-1.374999,-0.689164,0.714565,-1.231978,-1.011126,1.030958,-0.900287,-1.408641,0.859783,-0.510698,-1.331423,0.772138,0.086084];
+      const node_positions = [1.423012,1.013094,-1.001857,1.005238,1.594786,-0.932581,-1.119318,1.516212,-0.592663,1.947813,0.000000,-0.794039,1.936055,0.911798,-0.398132,1.301599,1.447601,-0.215576,0.863638,1.432476,1.352856,-0.392926,2.048640,-0.694039,0.744362,1.742089,0.604941,0.519046,1.995459,-0.256714,-0.287796,2.103212,0.284130,-1.081236,1.694082,0.403406,-1.710295,1.382195,-0.041856,-2.000173,0.747538,0.152881,-2.033684,0.148356,0.188908];
       function toggle_label(index, labels, positions) {
         var existing = document.getElementById("label"+index);
         if (existing) {
@@ -36,7 +36,7 @@
           entity.setAttribute("look-at", "#camera");
           entity.setAttribute("position", {x: positions[index*3], y: positions[index*3+1], z: positions[index*3+2]});
           entity.setAttribute("scale", {x: 0.200000, y: 0.200000, z: 0.200000});
-          entity.setAttribute("text", {anchor: "left", baseline: "bottom", color: "#FFFFFF", value: labels[index]});
+          entity.setAttribute("text", {anchor: "left", baseline: "bottom", color: "#000000", value: labels[index]});
           document.querySelector("a-scene").appendChild(entity);
         }
       }
