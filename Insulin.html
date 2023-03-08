@@ -17,12 +17,12 @@
       <a-entity id="rightController" hand-controls="hand: right; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
       <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
       <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
-      <a-circle position="0.0 0.0 0.0" radius="2.200000" rotation="-90 0 0" color="#0F0F0F"></a-circle>
+      <a-circle position="0.0 0.0 0.0" radius="1.500000" rotation="-90 0 0" color="#0F0F0F"></a-circle>
       <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.020000" edge_opacity="0.2" src="url(insulin.ply)"></a-network>
     </a-scene>
     <script>
       const node_names = ["GLUT1","AMPK","p70S6K","GLUCOSE","GLUT4","AS160","GS","MTOR","GSK-3","AKT","PDK1","PI3K","IRS-1","IR","Insulin"];
-      const node_positions = [1.635946,-0.280416,-1.151770,1.537727,0.636459,-1.426582,-1.750143,0.646635,-0.926676,1.557027,-1.261075,-0.634733,1.998293,-0.508648,-0.410930,2.077677,0.543584,-0.344112,1.170933,0.240145,1.834222,-0.648346,1.504831,-1.145198,1.379517,1.271523,1.121130,0.956108,1.724138,-0.472880,-0.558745,1.985548,0.551626,-1.643463,0.881964,0.613171,-2.078430,0.095033,-0.050865,-1.882880,-0.631794,0.143916,-1.745494,-1.159054,0.162138];
+      const node_positions = [1.006951,1.876818,-0.920401,0.617879,1.668047,-1.186651,-0.672898,1.449619,-1.058863,1.255226,2.000000,0.081158,1.253665,1.341478,-0.627007,0.829742,1.167655,-1.036962,0.582446,0.000000,-1.284927,-0.234497,1.432898,-1.422417,0.456534,0.570461,-1.241590,0.334196,1.166955,-1.459882,-0.165423,0.822690,-1.374999,-0.689164,0.714565,-1.231978,-1.011126,1.030958,-0.900287,-1.408641,0.859783,-0.510698,-1.331423,0.772138,0.086084];
       function toggle_label(index, labels, positions) {
         var existing = document.getElementById("label"+index);
         if (existing) {
