@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="aframe-master.min.js"></script>
+    <script src="aframe-network-component.js"></script>
+    <script>
+      AFRAME.registerComponent("look-at", {schema: {type: "selector"}, init: function () {}, tick: function () {this.el.object3D.lookAt(this.data.object3D.position);}});
+    </script>
+  </head>
+  <body>
+    <audio id="audioOn" src="click_on.wav"></audio>
+    <audio id="audioOff" src="click_off.wav"></audio>
+    <a-scene background="color: #000000;">
+      <a-entity id="camera" camera look-controls wasd-controls="acceleration: 5;" position="0.0 1.6 0.0"></a-entity>
+      <a-entity light="type: ambient;"></a-entity>
+      <a-entity id="leftController" hand-controls="hand: left; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
+      <a-entity id="rightController" hand-controls="hand: right; handModelStyle: highPoly; color: #7F7F7F"></a-entity>
+      <a-entity id="leftHand" hand-tracking-controls="hand: left; modelColor: #7F7F7F;"></a-entity>
+      <a-entity id="rightHand" hand-tracking-controls="hand: right; modelColor: #7F7F7F"></a-entity>
+      <a-circle position="0.0 0.0 0.0" radius="1.100000" rotation="-90 0 0" color="#0F0F0F"></a-circle>
+      <a-network position="0.0 0.0 0.0" rotation="0 0 0" node_size="0.020000" edge_opacity="0.2" src="url(IBD2.ply)"></a-network>
+    </a-scene>
+    <script>
+      const node_names = ["RSPO3 Fibroblasts","Glia cells","Pericytes","Enterocytes","Myofibroblasts","M cells","Inflammatory fibroblasts D","Microvascular cells","Inflammatory fibroblasts A","Inflammatory fibroblasts F","Inflammatory fibroblasts E","Immature Goblet cells","Endothelial cell","Immature Enterocytes B","Inflammatory fibroblasts B","Immature Enterocytes A","Inflammatory fibroblasts C","Glial cells","Inflammatory fibroblasts C","Inflammatory fibroblasts B","Microvascular cells","Inflammatory fibroblasts A","Myofibroblasts","Post-capillary Venules","Endothelial cells","Inflammatory fibroblasts D","RSPO3 Fibroblasts"];
+      const node_positions = [0.137734,0.821674,0.509382,0.923665,0.018464,-0.074674,0.643185,0.569353,-0.043402,0.785341,0.242841,0.458782,0.861548,0.108611,0.293561,0.803102,0.153644,0.529316,0.596841,0.565425,0.566676,-0.008078,0.874728,0.237896,-0.009869,0.843988,-0.432703,0.809078,0.052584,-0.327345,0.841737,0.161687,-0.579552,0.163378,0.556638,0.649338,-0.062726,1.093805,-0.052071,0.848689,0.052797,0.106895,0.158034,0.628521,-0.633894,0.593405,0.290313,0.562706,0.408217,0.421482,-0.619324,-0.712671,0.713527,-0.046685,-0.879949,0.020017,-0.026237,-0.597516,0.592941,-0.344944,-1.062031,-0.000000,-0.265862,-0.927894,0.327423,0.163226,-0.812757,0.487470,-0.504251,-1.087489,0.048695,0.081105,-1.010728,0.145488,-0.401864,-0.990945,0.360086,-0.134120,-0.717712,0.560363,0.126725];
+      function toggle_label(index, labels, positions) {
+        var existing = document.getElementById("label"+index);
+        if (existing) {
+          document.getElementById("audioOff").play();
+          existing.parentElement.removeChild(existing);
+        }
+        else {
+          document.getElementById("audioOn").play();
+          var entity = document.createElement("a-entity");
+          entity.setAttribute("id", "label"+index);
+          entity.setAttribute("look-at", "#camera");
+          entity.setAttribute("position", {x: positions[index*3], y: positions[index*3+1], z: positions[index*3+2]});
+          entity.setAttribute("scale", {x: 0.200000, y: 0.200000, z: 0.200000});
+          entity.setAttribute("text", {anchor: "left", baseline: "bottom", color: "#FFFFFF", value: labels[index]});
+          document.querySelector("a-scene").appendChild(entity);
+        }
+      }
+      function find_nearest(position, positions) {
+        var nearest_d = 1000.0;
+        var nearest_i = null;
+        for (let i = 0; i < node_positions.length; i += 3) {
+          let d = Math.sqrt((position.x-positions[i])**2+(position.y-positions[i+1])**2+(position.z-positions[i+2])**2);
+          if (d < nearest_d) {
+            nearest_d = d;
+            nearest_i = i/3;
+          }
+        }
+        if (nearest_d < 0.1) {
+          toggle_label(nearest_i, node_names, positions);
+        }
+      }
+      document.getElementById("leftController").addEventListener("gripdown", function (event) {
+        find_nearest(document.getElementById("leftController").getAttribute("position"), node_positions);
+      });
+      document.getElementById("rightController").addEventListener("gripdown", function (event) {
+        find_nearest(document.getElementById("rightController").getAttribute("position"), node_positions);
+      });
+      document.getElementById("leftHand").addEventListener("pinchstarted", function (event) {
+        find_nearest(event.detail.position, node_positions);
+      });
+      document.getElementById("rightHand").addEventListener("pinchstarted", function (event) {
+        find_nearest(event.detail.position, node_positions);
+      });
+    </script>
+  </body>
+</html>
